@@ -1,4 +1,5 @@
 var express = require('express');
+const mapModel = require("../models/map.model");
 
 var map = express.Router();
 
@@ -50,10 +51,27 @@ async function _modifyMarker(req, res) {
     res.end();
 }
 
+async function _getPlace(req, res) {
+    let token = req.body.token;
+    let lat = req.body.lat;
+	let lon = req.body.lon;
+    let category = req.body.category;
+
+    if (token && category) {
+        const placeData = await mapModel.place(lat, lon, category);
+        console.log(placeData);
+        res.send({placeData});
+    } else {
+		res.send('Failed!');
+	}
+    res.end();
+}
+
 
 map.get('/getMarker', _getMarker);
 map.post('/putMarker', _putMarker);
 map.put('/modifyMarker', _modifyMarker);
+map.get('/getPlace', _getPlace);
 
 
 module.exports = map;
