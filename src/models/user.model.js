@@ -19,8 +19,8 @@ async function read(username, password) {
         const data = await getData(conn, username, password);
         conn.end();
 
-        if (rows.length == 1) {
-            return rows[0];
+        if (data.length == 1) {
+            return data[0];
         } else {
             return false;
         }
