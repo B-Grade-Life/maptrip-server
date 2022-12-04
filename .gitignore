@@ -105,3 +105,6 @@ dist
 
 # jshintrc
 .jshintrc
+
+# node js package
+package-lock.json
