@@ -21,6 +21,5 @@ function connect() {
     });
 }
 
-module.exports = {
-    connect
-};
+
+module.exports = { connect };
