@@ -21,6 +21,8 @@ app.set('port', process.env.PORT || 5642);
 app.use(morgan('dev'));
 app.use('/user', require('./controllers/user'));
 app.use('/map', require('./controllers/map'));
+app.use('/group', require('./controllers/group'));
+app.use('/calendar', require('./controllers/calendar'));
 
 app.get('/', function(req, res) {
   res.send('Start Maptrip Server.');
