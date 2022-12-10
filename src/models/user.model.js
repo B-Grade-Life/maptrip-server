@@ -1,26 +1,26 @@
+const { v4: uuidv4 } = require('uuid');
+
 const pool = require("../utils/db.js");
 
 
-const queryDB = async (conn, username, password) => {
-    sql = "SELECT * FROM accounts WHERE username = ? AND password = ?";
-    const rows = await conn.query(sql, [username, password]);
+const select = async (conn, id, password) => {
+    sql = "SELECT * FROM user WHERE id = ? AND password = ?";
+    const rows = await conn.query(sql, [id, password]);
     return rows;
 };
 
-const getData = async (conn, username, password) => {
-    let tmp = await queryDB(conn, username, password);
-    return tmp;
-};
 
-
-async function read(username, password) {
+async function read(id, password) {
     try {
         let conn = await pool.connect();
-        const data = await getData(conn, username, password);
+        const data = await select(conn, id, password);
         conn.end();
 
         if (data.length == 1) {
-            return data[0];
+            return {
+                "uuid": data[0].uuid,
+                "username": data[0].username
+            };
         } else {
             return false;
         }

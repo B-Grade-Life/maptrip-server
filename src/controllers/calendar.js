@@ -1,46 +1,45 @@
 var express = require('express');
 const { v4: uuidv4 } = require('uuid');
-// const mariadb = require('mariadb');
-// const usersModel = require("../models/user.model");
 
+const calendarModel = require("../models/calendar.model");
 var calendar = express.Router();
 
 
-async function _signup(req, res) {
+async function _insert(req, res) {
 	let username = req.body.username;
-	let id = req.body.id;
-	let password = req.body.password;
+	let title = req.body.title;
+	let content = req.body.content;
+	let from_date = req.body.from_date;
+	let to_date = req.body.to_date;
 
-	if (username && id && password) {
-		res.send('Sign Up!');
+	if (username && title && content && from_date && to_date) {
+		const calendarData = await calendarModel.write(
+			username, title, content, from_date, to_date
+		);
+		res.send(calendarData);
 	} else {
-		res.send('Please enter Username, Id, Password!');
+		res.send("Please enter Username, Title, Content, From_date, To_date!");
 	}
 	res.end();
 }
 
-async function _login(req, res) {
-  	let id = req.body.id;
-	let password = req.body.password;
-	// Ensure the input fields exists and are not empty
-	// if (username && password) {
-	// 	// Execute SQL query that'll select the account from the database based on the specified username and password
-	// 	const user = usersModel.read(username, password);
-    // 	res.send({user});
-	// } else {
-	// 	res.send('Please enter Username and Password!');
-	// 	res.end();
-	// }
-	if (id && password) {
-		res.send(uuidv4());
+async function _select(req, res) {
+	let username = req.body.username;
+	let from_date = req.body.from_date;
+
+	if (username && from_date) {
+		const calendarData = await calendarModel.read(username, from_date);
+    	res.send(calendarData);
 	} else {
-		res.send('Please enter Id and Password!');
+		res.send('Please enter Username and From_date!');
+		
 	}
 	res.end();
 }
 
-calendar.post('/signup', _signup);
-calendar.get('/login', _login);
+
+calendar.post('/insert', _insert);
+calendar.get('/select', _select);
 
 
 module.exports = calendar;
