@@ -1,7 +1,8 @@
 var express = require('express');
-const { v4: uuidv4 } = require('uuid');
+// const { v4: uuidv4 } = require('uuid');
+
 // const mariadb = require('mariadb');
-// const usersModel = require("../models/user.model");
+const usersModel = require("../models/user.model");
 
 var user = express.Router();
 
@@ -23,16 +24,10 @@ async function _login(req, res) {
   	let id = req.body.id;
 	let password = req.body.password;
 	// Ensure the input fields exists and are not empty
-	// if (username && password) {
-	// 	// Execute SQL query that'll select the account from the database based on the specified username and password
-	// 	const user = usersModel.read(username, password);
-    // 	res.send({user});
-	// } else {
-	// 	res.send('Please enter Username and Password!');
-	// 	res.end();
-	// }
 	if (id && password) {
-		res.send(uuidv4());
+		// Execute SQL query that'll select the account from the database based on the specified username and password
+		const userData = await usersModel.read(id, password);
+    	res.send(userData);
 	} else {
 		res.send('Please enter Id and Password!');
 	}

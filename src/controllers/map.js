@@ -5,10 +5,9 @@ var map = express.Router();
 
 
 async function _getMarker(req, res) {
-    let token = req.body.token;
     let groupId = req.body.groupId;
 
-    if (token) {
+    if (groupId) {
         res.send({
             lat : 37.5666805,
             lon : 126.9784147
@@ -20,12 +19,11 @@ async function _getMarker(req, res) {
 }
 
 async function _putMarker(req, res) {
-    let token = req.body.token;
     let lat = req.body.lat;
 	let lon = req.body.lon;
     let groupId = req.body.groupId;
 
-    if (token) {
+    if (lat) {
         res.send({
             msg: "Marker added successfully."
         });
@@ -36,12 +34,11 @@ async function _putMarker(req, res) {
 }
 
 async function _modifyMarker(req, res) {
-    let token = req.body.token;
     let lat = req.body.lat;
 	let lon = req.body.lon;
     let groupId = req.body.groupId;
 
-    if (token) {
+    if (lat) {
         res.send({
             msg: "Marker modified successfully."
         });
@@ -52,15 +49,13 @@ async function _modifyMarker(req, res) {
 }
 
 async function _getPlace(req, res) {
-    let token = req.body.token;
     let lat = req.body.lat;
 	let lon = req.body.lon;
     let category = req.body.category;
 
-    if (token && category) {
+    if (lat && lon && category) {
         const placeData = await mapModel.place(lat, lon, category);
-        console.log(placeData);
-        res.send({placeData});
+        res.send(placeData);
     } else {
 		res.send('Failed!');
 	}
