@@ -58,7 +58,7 @@ async function _getPlace(req, res) {
 
     if (lat && lon && category) {
         const placeData = await mapModel.place(lat, lon, category);
-        res.send(placeData);
+        res.send({data: placeData});
     } else {
 		res.send('Failed!');
 	}
@@ -67,6 +67,7 @@ async function _getPlace(req, res) {
 
 async function _shortestDistance(req, res) {
     let body = req.body;
+    console.log(body);
 
     let arr = [];
     for (let i = 0; i < body.length; i++) {
@@ -157,15 +158,18 @@ async function _shortestDistance(req, res) {
     let minCategory_list = _category_list(minSum_list);
     let minSecCategory_list = _category_list(minSecSum_list);
 
+    console.log(minSum * 1000);
     res.send({
-        "fastest" : {
-            "distance" : minSum * 1000,
-            "route": minCategory_list.join(' - ')
-        },
-        "second fastest" : {
-            "distance" : minSecSum * 1000,
-            "route": minSecCategory_list.join(' - ')
-        }
+        "data": [
+            {
+                "distance" : parseInt(minSum * 1000),
+                "route": minCategory_list.join(' - ')
+            },
+            {
+                "distance" : parseInt(minSecSum * 1000),
+                "route": minSecCategory_list.join(' - ')
+            }
+        ]
     });
     res.end();
 }
